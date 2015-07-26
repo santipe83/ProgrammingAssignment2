@@ -1,51 +1,59 @@
-## Put comments here that give an overall description of what your
-## functions do
 
-## Write a short comment describing this function
 
 makeCacheMatrix <- function(x = matrix()) {
-    
+## Creates a special "matrix" object that can cache 
+##
+## Args: 
+##    x:    Matrix to solve
+##    ... : Arguments available for Solve() function
+## 
+## Returns: 
+##    A list of functions
+      
     #cached Result
-    inverse_mat <- NULL
+    inverseMat <- NULL
     
     #Definition of SET function
     set <- function(y) {
       x <<- y
-      inverse_mat <<- NULL
+      inverseMat <<- NULL
     }
     
     #Definition of GET function
     get <- function() x
     
     #Definition of SETINVERSE function
-    setinverse <- function(inv) inverse_mat <<- inv
+    setInverse <- function(inv) inverseMat <<- inv
     
     #Definition of GETINVERSE function
-    getinverse <- function() inverse_mat
+    getInverse <- function() inverseMat
     
     #Return: List of functions
     list(set = set, get = get,
-         setinverse = setinverse,
-         getinverse = getinverse)
+         setInverse = setInverse,
+         getInverse = getInverse)
   
 }
 
 
-## Write a short comment describing this function
 
 cacheSolve <- function(x, ...) {
   ## Return a matrix that is the inverse of 'x'
+  ## This function computes the inverse of the special "matrix"
+  ## returned by makeCacheMatrix above. If the inverse has already been calculated (and the matrix has not changed), then the cachesolve should retrieve the inverse from the cache.
   
-    inver_mat <- x$getinverse()
+    inverMat <- x$getInverse()
     
-    if(!is.null(inver_mat)) {
+    #Checks if Inverse of X has been already calculated
+    if(!is.null(inverMat)) {
       message("getting cached data")
-      return(inver_mat)
+      return(inverMat)
     }
     
+    #Calculation of inverse of X (caching the result too)
     data <- x$get()
-    inver_mat <- solve(data, ...)
-    x$setinverse(inver_mat)
-    inver_mat
+    inverMat <- solve(data, ...)
+    x$setInverse(inverMat)
+    inverMat
   
 }
